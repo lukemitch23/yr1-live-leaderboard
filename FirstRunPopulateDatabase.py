@@ -127,12 +127,12 @@ def create_database_questions(host, user, password, database):
 if __name__ == "__main__":
     # Connection settings for MySQL.
     host = 'localhost'
-    user = 'your_username'
-    password = 'your_password'
+    user = 'pi_agent'
+    password = 'PowerUp'
     
     # Replace with your MySQL database names.
-    leaderboard_database = 'leaderboard_db'
-    questions_database = 'questions_db'
+    leaderboard_database = 'leaderboard'
+    questions_database = 'questions'
     
     # Create and populate the leaderboard table.
     leaderboard = CreateDatabase(host, user, password, leaderboard_database, "leader")
