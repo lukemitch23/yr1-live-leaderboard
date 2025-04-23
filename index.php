@@ -42,7 +42,6 @@
                 <tr id="row8"><td>8</td><td>Grey Cormorant35</td><td>gc35</td><td>156</td></tr>
                 <tr id="row9"><td>9</td><td>Dry Goldfinch54</td><td>dg54</td><td>189</td></tr>
                 <tr id="row10"><td>10</td><td>Quiet Antelope6</td><td>qa6</td><td>78</td></tr>
-
             </tbody>
         </table>
     </div>
@@ -77,7 +76,6 @@
 include 'db_connect.php';
 $iteration = 0;
 
-
 function update_leaderboard($link, $start_point, $end_point){
     $sql = "SELECT * FROM leader WHERE place BETWEEN '$start_point' AND '$end_point' ORDER BY place";
     $result = mysqli_query($link, $sql);
@@ -88,17 +86,15 @@ function update_leaderboard($link, $start_point, $end_point){
 
     $row_num = 1;
     while ($row = mysqli_fetch_assoc($result)) {
-        foreach ($row as $row) {
-            echo '<script> updateRow(' . $row_num . ', "' . $row['place'] . '", "' . $row['name'] . '", "' . $row['code'] . '", ' . $row['score'] . '); </script>';
-            $row_num++;
-        }
+        echo '<script> updateRow(' . $row_num . ', "' . $row['place'] . '", "' . $row['name'] . '", "' . $row['code'] . '", ' . $row['score'] . '); </script>';
+        $row_num++;
     }
 }
 
 while (TRUE) {
-    update_leaderboard($link, $start_point, $end_point);
     $start_point = ($iteration * 10) + 1; 
     $end_point = ($iteration * 10) + 10;
+    update_leaderboard($link, $start_point, $end_point);
     $iteration = $iteration + 1;
     if ($iteration > 3){
         $iteration = 0;
@@ -106,5 +102,3 @@ while (TRUE) {
     sleep(20);
 }
 ?>
-
-
