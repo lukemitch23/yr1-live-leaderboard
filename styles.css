@@ -1,0 +1,126 @@
+@font-face {
+    font-family: 'Pixeltype';
+    src: url('Pixeltype.ttf') format('truetype');
+}
+
+body {
+    font-family: 'Pixeltype', sans-serif;
+    background: black;
+    /* color: #fff; */
+    margin: 0;
+    letter-spacing: 5px;
+}
+
+.departures-banner {
+    background-color: #0ad64f;
+    color: white;
+    width: 100%;
+    text-align: left;
+    padding: 10px;
+    height: 170px;
+}
+
+.header-content {
+    display: flex;
+    align-items: left;
+    /* justify-content: space-between; Space between elements */
+}
+
+.header-image {
+    width: auto; /* Adjust the width as needed */
+    height: 150px;
+    margin-right: 20px; 
+    /* margin-top: 50px; */
+    justify-content: center;
+    align-items: center;
+}
+
+
+.header-title {
+    padding-top: 50px;
+    font-size: 7em;
+    margin: 0; /* Remove default margins */
+    letter-spacing: 20px;
+    filter: drop-shadow(4px 4px 1px black)
+}
+
+.header-clock {
+    display: flex;
+    align-items: center;
+    font-size: 7em; /* Adjust the font size as needed */
+    color: white; /* Clock text color */
+    margin-left: auto; /* Push the clock to the right */
+    padding-right: 70px;
+    text-align: center;
+}
+
+
+.clock-box {
+    background-color: #323239;
+    padding: 20px;
+    
+    /* border-radius: 5px; */
+    height: 50px;
+    width: 40px;
+    margin-right: 5px;
+    margin-left: 5px;
+    align-items: center;
+    justify-content: center;
+}
+
+.clock-separator {
+    font-size: 1.2em; /* Adjust the font size as needed */
+    padding: 10px;
+    color: white; /* Separator text color */
+    background-color: #323239;
+    height: 70px;
+    width: 40px;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+.departures-board {
+    /* margin-top: 50px; Gap between banner and table */
+    width: 100%;
+    /* margin-left: auto; */
+    /* margin-right: auto; */
+    text-align: left;
+    
+    /* padding: 20px; */
+}
+
+table {
+    width: 95%;
+    border-collapse: collapse;
+    margin: auto;
+    /* border-right: white; */
+}
+
+th, td {
+    padding: 30px;
+    font-size: 4em;
+    color: white;
+    padding-left: 30px;
+    
+    
+    
+}
+
+th {
+    background-color: #000000;
+    letter-spacing: 10px;
+    font-weight: 300;
+    border-bottom: 5px solid #1b1b1b;
+}
+
+td {
+    background-color: #333333;
+    color: #0ad64f;
+    padding-left: 40px;
+    border-right: 2px solid #1b1b1b;
+    border-bottom: 2px solid #1b1b1b;
+    height: 20px;
+}
+
+/* tr:nth-child(even) td {
+    background-color: #00ff40;
+} */
