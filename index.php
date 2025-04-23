@@ -67,42 +67,61 @@
             row.cells[3].innerHTML = score;
         }
 
-        function wait_return(iteration){
-            <?php
-            include 'db_connect.php';
-            $iteration = 2;
+        const mysql = require('mysql');
 
-            function update_leaderboard($link, $start_point, $end_point){
-                $sql = "SELECT * FROM leader WHERE place BETWEEN '$start_point' AND '$end_point' ORDER BY place";
-                $result = mysqli_query($link, $sql);
+        const connection = mysql.createConnection({
+        host: 'localhost',
+        user: 'pi_agent',
+        password: 'PowerUp',
+        database: 'leaderboard'
+        });
 
-                if (!$result) {
-                    die("Query failed: " . mysqli_error($link));
-                }
-
-                $row_num = 1;
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo '<script> updateRow(' . $row_num . ', "' . $row['place'] . '", "' . $row['name'] . '", "' . $row['code'] . '", ' . $row['score'] . '); </script>';
-                    $row_num++;
-                }
-            }
-
-            $start_point = ($iteration * 10) + 1; 
-            $end_point = ($iteration * 10) + 10;
-            update_leaderboard($link, $start_point, $end_point);
-            $iteration = $iteration + 1;
-            if ($iteration > 3){
-                $iteration = 0;
-            }
-            ?>
-            console.log("It has been done");
+        connection.connect((err) => {
+        if (err) {
+            console.error('Connection failed: ' + err.stack);
+            return;
         }
+        console.log('Connected successfully');
+        });
+
+        let iteration = 0;
+
+        function updateLeaderboard(startPoint, endPoint) {
+        const sql = `SELECT * FROM leader WHERE place BETWEEN ${startPoint} AND ${endPoint} ORDER BY place`;
+        connection.query(sql, (error, results) => {
+            if (error) {
+            console.error('Query failed: ' + error.stack);
+            return;
+            }
+
+            let rowNum = 1;
+            results.forEach(row => {
+            console.log(`<script> updateRow(${rowNum}, "${row.place}", "${row.name}", "${row.code}", ${row.score}); </script>`);
+            rowNum++;
+            });
+        });
+        }
+
+        function waitReturn() {
+            setTimeout(() => {
+                const startPoint = (iteration * 10) + 1;
+                const endPoint = (iteration * 10) + 10;
+                updateLeaderboard(startPoint, endPoint);
+                iteration = iteration + 1;
+                if (iteration > 3) {
+                iteration = 0;
+                }
+                waitReturn();
+            }, 45000); // Update every 45 seconds
+            }
+
+        waitReturn();
 
         setInterval(updateClock, 1000);
         updateClock(); // Initial call to display the clock immediately
-        setInterval(wait_return, 25000);
+        iteration = setInterval(function() {update_iteration(iteration);},20000);
+
     </script>
 </body>
 </html>
-
 
