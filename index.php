@@ -46,6 +46,7 @@
         </table>
     </div>
     <script>
+        let iteration = 0;
         function updateClock() {
             const now = new Date();
             const hours = now.getHours().toString().padStart(2, '0');
@@ -66,23 +67,42 @@
             row.cells[3].innerHTML = score;
         }
 
-        function fetchLeaderboard() {
-            fetch('leaderboard.php')
-                .then(response => response.json())
-                .then(data => {
-                    data.forEach((item, index) => {
-                        updateRow(index + 1, item.place, item.name, item.code, item.score);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching leaderboard:', error);
-                });
+        function wait_return(iteration){
+            <?php
+            include 'db_connect.php';
+            $iteration = 2;
+
+            function update_leaderboard($link, $start_point, $end_point){
+                $sql = "SELECT * FROM leader WHERE place BETWEEN '$start_point' AND '$end_point' ORDER BY place";
+                $result = mysqli_query($link, $sql);
+
+                if (!$result) {
+                    die("Query failed: " . mysqli_error($link));
+                }
+
+                $row_num = 1;
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo '<script> updateRow(' . $row_num . ', "' . $row['place'] . '", "' . $row['name'] . '", "' . $row['code'] . '", ' . $row['score'] . '); </script>';
+                    $row_num++;
+                }
+            }
+
+            $start_point = ($iteration * 10) + 1; 
+            $end_point = ($iteration * 10) + 10;
+            update_leaderboard($link, $start_point, $end_point);
+            $iteration = $iteration + 1;
+            if ($iteration > 3){
+                $iteration = 0;
+            }
+            ?>
+            console.log("It has been done");
         }
 
         setInterval(updateClock, 1000);
         updateClock(); // Initial call to display the clock immediately
-        setInterval(fetchLeaderboard, 10000); // Fetch leaderboard every 10 seconds
-        fetchLeaderboard(); // Initial call to fetch leaderboard immediately
+        setInterval(wait_return, 25000);
     </script>
 </body>
 </html>
+
+
