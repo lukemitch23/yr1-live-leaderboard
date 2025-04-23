@@ -66,6 +66,10 @@
             row.cells[3].innerHTML = score;
         }
 
+        function wait_return(){
+            return 0;
+        }
+
         setInterval(updateClock, 1000);
         updateClock(); // Initial call to display the clock immediately
     </script>
@@ -91,7 +95,7 @@ function update_leaderboard($link, $start_point, $end_point){
     }
 }
 
-while (TRUE) {
+while (1) {
     $start_point = ($iteration * 10) + 1; 
     $end_point = ($iteration * 10) + 10;
     update_leaderboard($link, $start_point, $end_point);
@@ -99,6 +103,6 @@ while (TRUE) {
     if ($iteration > 3){
         $iteration = 0;
     }
-    sleep(20);
+    echo '<script>setTimeout(wait_return(), 20000;</script>';
 }
 ?>
