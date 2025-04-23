@@ -67,17 +67,19 @@
 include 'db_connect.php';
 
 // Get the total count of rows in the 'leader' table
-$sql = "SELECT COUNT(id) AS total_count FROM leader";
-$result = mysqli_query($link, $sql);
+// $sql = "SELECT COUNT(id) AS total_count FROM leader";
+// $result = mysqli_query($link, $sql);
 
-if (!$result) {
-    die("Query failed: " . mysqli_error($link));
-}
+// if (!$result) {
+//     die("Query failed: " . mysqli_error($link));
+// }
 
-$row = mysqli_fetch_assoc($result);
-$data_amount = (int)$row['total_count'];
-$whole_iterations = floor($data_amount / 10);
-$partial_iterations = $data_amount % 10;
+// $row = mysqli_fetch_assoc($result);
+// $data_amount = (int)$row['total_count'];
+// $whole_iterations = floor($data_amount / 10);
+// $partial_iterations = $data_amount % 10;
+
+$whole_iterations = 4
 
 $ten_block = 0;
 
@@ -100,6 +102,7 @@ function get_update($ten_block, $link) {
     }
 }
 
+sleep(120);
 while (true) {
     get_update($ten_block, $link);
     sleep(45);
