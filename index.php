@@ -66,49 +66,21 @@
 <?php
 include 'db_connect.php';
 
-// Get the total count of rows in the 'leader' table
-// $sql = "SELECT COUNT(id) AS total_count FROM leader";
-// $result = mysqli_query($link, $sql);
+$sql = "SELECT * FROM leader WHERE id BETWEEN 1 AND 10";
+$result = mysqli_query($link, $sql);
 
-// if (!$result) {
-//     die("Query failed: " . mysqli_error($link));
-// }
-
-// $row = mysqli_fetch_assoc($result);
-// $data_amount = (int)$row['total_count'];
-// $whole_iterations = floor($data_amount / 10);
-// $partial_iterations = $data_amount % 10;
-
-$whole_iterations = 4
-
-$ten_block = 0;
-
-function get_update($ten_block, $link) {
-    $row_id = 1;
-    $start_id = ($ten_block * 10) + 1;
-    $end_id = ($ten_block * 10) + 10;
-    $sql = "SELECT * FROM leader WHERE id BETWEEN $start_id AND $end_id ORDER BY place";
-    $ranks = mysqli_query($link, $sql);
-
-    if (!$ranks) {
-        die("Query failed: " . mysqli_error($link));
-    }
-
-    while ($row = mysqli_fetch_assoc($ranks)) {
-        echo '<script type="text/javascript">
-        updateRow(' . $row_id . ', "' . $row['place'] . '", "' . $row['name'] . '", "' . $row['code'] . '", "' . $row['score'] . '");
-        </script>';
-        $row_id++;
-    }
+if (!$result) {
+    die("Query failed: " . mysqli_error($link));
 }
 
-sleep(120);
-while (true) {
-    get_update($ten_block, $link);
-    sleep(45);
-    $ten_block++;
-    if ($ten_block > $whole_iterations) {
-        $ten_block = 0;
+sleep(60);
+$row_num = 1;
+while ($row = mysqli_fetch_assoc($result)) {
+    foreach ($row) {
+        echo '<script type="text/javascript">
+updateRow(' . $row_num . ', "' . $row['place'] . '", "' . $row['username'] . '", "' . $row['code'] . '", ' . $row['score'] . ');
+</script>';
+        $row_num++;
     }
 }
 ?>
