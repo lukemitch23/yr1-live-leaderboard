@@ -57,6 +57,16 @@
             document.getElementById('minute2').textContent = minutes[1];
         }
 
+        function updateRow(num, rank, username, code, score) {
+            var row_text = "row";
+            let row_to_update = row_text.concat(num);
+            var row = document.getElementById(row_to_update);
+            row.cells[0].innerHTML = rank;
+            row.cells[1].innerHTML = username;
+            row.cells[2].innerHTML = code;
+            row.cells[3].innerHTML = score;
+        }
+
         setInterval(updateClock, 1000);
         updateClock(); // Initial call to display the clock immediately
     </script>
@@ -65,23 +75,35 @@
 
 <?php
 include 'db_connect.php';
+$iteration = 0;
 
-$sql = "SELECT * FROM leader WHERE id BETWEEN 1 AND 10";
-$result = mysqli_query($link, $sql);
 
-if (!$result) {
-    die("Query failed: " . mysqli_error($link));
+function update_leaderboard($link, $start_point, $end_point){
+    $sql = "SELECT * FROM leader WHERE place BETWEEN '$start_point' AND '$end_point' ORDER BY place";
+    $result = mysqli_query($link, $sql);
+
+    if (!$result) {
+        die("Query failed: " . mysqli_error($link));
+    }
+
+    $row_num = 1;
+    while ($row = mysqli_fetch_assoc($result)) {
+        foreach ($row as $row) {
+            echo '<script> updateRow(' . $row_num . ', "' . $row['place'] . '", "' . $row['name'] . '", "' . $row['code'] . '", ' . $row['score'] . '); </script>';
+            $row_num++;
+        }
+    }
 }
 
-sleep(60);
-$row_num = 1;
-while ($row = mysqli_fetch_assoc($result)) {
-    foreach ($row) {
-        echo '<script type="text/javascript">
-updateRow(' . $row_num . ', "' . $row['place'] . '", "' . $row['username'] . '", "' . $row['code'] . '", ' . $row['score'] . ');
-</script>';
-        $row_num++;
+while (TRUE) {
+    update_leaderboard($link, $start_point, $end_point);
+    $start_point = ($iteration * 10) + 1; 
+    $end_point = ($iteration * 10) + 10;
+    $iteration = $iteration + 1;
+    if ($iteration > 3){
+        $iteration = 0;
     }
+    sleep(20);
 }
 ?>
 
